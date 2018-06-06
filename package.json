@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-flow-entry",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "description": "Allows Flow to find the original typed source code for the Rollup bundle",
   "keywords": [

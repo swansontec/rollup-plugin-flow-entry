@@ -17,7 +17,7 @@ export default {
   plugins: [
     flowEntry()
     // You will also need rollup-plugin-babel or rollup-plubin-flow
-    // here to strip your type annotations...
+    // in here to strip your type annotations...
   ]
 }
 ```
