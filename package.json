@@ -12,7 +12,8 @@
     "CHANGELOG.md",
     "lib/*",
     "package.json",
-    "README.md"
+    "README.md",
+    "src/*"
   ],
   "main": "lib/index.js",
   "scripts": {

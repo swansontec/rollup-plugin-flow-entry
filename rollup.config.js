@@ -12,5 +12,6 @@ export default {
   external: ['fs', 'path', 'pify'],
   input: './src/index.js',
   output: { file: packageJson.main, format: 'cjs' },
-  plugins: [babel(babelOpts), flowEntry()]
+  plugins: [babel(babelOpts), flowEntry()],
+  sourcemap: true
 }
