@@ -1,0 +1,39 @@
+{
+  "name": "rollup-plugin-flow-entry",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Allows Flow to find the original typed source code for the Rollup bundle",
+  "keywords": [
+    "rollup-plugin"
+  ],
+  "license": "MIT",
+  "author": "William Swanson <william@edgesecure.co>",
+  "files": [
+    "CHANGELOG.md",
+    "lib/*",
+    "package.json",
+    "README.md"
+  ],
+  "main": "lib/index.js",
+  "scripts": {
+    "precommit": "npm run lint",
+    "lint": "eslint src/**/*.js",
+    "prepare": "rollup -c"
+  },
+  "dependencies": {
+    "pify": "^3.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "husky": "^0.14.3",
+    "rollup": "^0.60.0",
+    "rollup-plugin-babel": "^3.0.4"
+  }
+}
