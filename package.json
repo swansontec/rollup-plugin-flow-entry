@@ -24,6 +24,7 @@
     "test": "node test/index.test.js"
   },
   "dependencies": {
+    "matched": "^2.0.1",
     "pify": "^3.0.0"
   },
   "devDependencies": {
@@ -38,6 +39,7 @@
     "eslint-plugin-standard": "^3.1.0",
     "husky": "^0.14.3",
     "rollup": "^0.60.0",
-    "rollup-plugin-babel": "^3.0.4"
+    "rollup-plugin-babel": "^3.0.4",
+    "rollup-plugin-multi-entry": "^2.0.2"
   }
 }

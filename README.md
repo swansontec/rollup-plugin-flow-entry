@@ -31,3 +31,5 @@ export * from '../src/index.js'
 ```
 
 This plugin doesn't take any configuration options.
+
+If you use [rollup-plugin-multi-entry](https://github.com/rollup/rollup-plugin-multi-entry), this plugin will properly handle the multiple entry points. You must place rollup-plugin-flow-entry before rollup-plugin-multi-entry in the plugins array, though.
