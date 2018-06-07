@@ -17,9 +17,11 @@
   ],
   "main": "lib/index.js",
   "scripts": {
-    "precommit": "npm run lint",
+    "precommit": "npm run lint && npm run test",
     "lint": "eslint src/**/*.js",
-    "prepare": "rollup -c"
+    "prepare": "rollup -c",
+    "pretest": "rollup -c",
+    "test": "node test/index.test.js"
   },
   "dependencies": {
     "pify": "^3.0.0"
@@ -27,6 +29,7 @@
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-preset-es2015-rollup": "^3.0.0",
+    "babel-preset-flow": "^6.23.0",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.12.0",
