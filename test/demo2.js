@@ -1,5 +1,5 @@
 // @flow
 
-export function demo2(a: Array<string>): string {
+export function demo2 (a: Array<string>): string {
   return a.join('')
 }
