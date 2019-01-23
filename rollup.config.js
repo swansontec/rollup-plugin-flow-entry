@@ -4,11 +4,13 @@ import packageJson from './package.json'
 
 const babelOpts = {
   babelrc: false,
-  presets: ['es2015-rollup']
+  presets: ['@babel/preset-env']
 }
 
+const external = [...Object.keys(packageJson.dependencies), 'fs', 'path']
+
 export default {
-  external: ['fs', 'path', 'pify'],
+  external,
   input: './src/index.js',
   output: { file: packageJson.main, format: 'cjs', sourcemap: true },
   plugins: [babel(babelOpts)]

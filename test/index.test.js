@@ -13,7 +13,7 @@ const expected =
 
 const babelOpts = {
   babelrc: false,
-  presets: ['es2015-rollup', 'flow']
+  presets: ['@babel/preset-env', '@babel/preset-flow']
 }
 
 // No testing framework needed!
