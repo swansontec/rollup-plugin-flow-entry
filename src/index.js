@@ -29,7 +29,7 @@ export default function flowEntry () {
       savedInput = opts.input
     },
 
-    onwrite (opts) {
+    generateBundle (opts, bundle) {
       if (!savedInput) return
       if (typeof savedInput === 'string' && savedInput.charCodeAt(0) === 0) {
         throw new Error(
