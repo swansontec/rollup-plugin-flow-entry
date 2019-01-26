@@ -1,5 +1,9 @@
 # rollup-plugin-flow-entry
 
+## 0.2.2 (2019-01-25)
+
+- Create the destination directory if it is missing.
+
 ## 0.2.1
 
 - Stop using deprecated hook for better compatibility with rollup v1.0.0.
