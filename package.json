@@ -24,8 +24,7 @@
     "test": "node test/index.test.js"
   },
   "dependencies": {
-    "matched": "^2.0.1",
-    "pify": "^3.0.0"
+    "matched": "^2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",

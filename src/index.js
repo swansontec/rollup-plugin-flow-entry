@@ -1,7 +1,44 @@
 import fs from 'fs'
 import { promise as matched } from 'matched'
 import path from 'path'
-import pify from 'pify'
+
+function mkdir (nativePath) {
+  return new Promise((resolve, reject) =>
+    fs.mkdir(nativePath, void 0, err =>
+      err != null && err.code !== 'EEXIST' ? reject(err) : resolve()
+    )
+  )
+}
+
+function writeFile (nativePath, data, opts) {
+  return new Promise((resolve, reject) =>
+    fs.writeFile(nativePath, data, opts, (err, out) =>
+      err != null ? reject(err) : resolve(out)
+    )
+  )
+}
+
+/**
+ * Recursively creates a directory.
+ */
+function deepMkdir (nativePath) {
+  return mkdir(nativePath).catch(err => {
+    if (err.code !== 'ENOENT') throw err
+    return deepMkdir(path.dirname(nativePath)).then(() => mkdir(nativePath))
+  })
+}
+
+/**
+ * Writes a file, creating its directory if needed.
+ */
+function deepWriteFile (nativePath, data, opts) {
+  return writeFile(nativePath, data, opts).catch(err => {
+    if (err.code !== 'ENOENT') throw err
+    return deepMkdir(path.dirname(nativePath)).then(() =>
+      writeFile(nativePath, data, opts)
+    )
+  })
+}
 
 function arrayify (input) {
   return Array.isArray(input) ? input : input != null ? [input] : []
@@ -48,7 +85,7 @@ export default function flowEntry () {
           code += `export * from '${escaped}'\n`
         }
 
-        return pify(fs.writeFile)(flowPath, code)
+        return deepWriteFile(flowPath, code, 'utf8')
       })
     }
   }
