@@ -7,7 +7,7 @@ const babelOpts = {
   presets: ['@babel/preset-env']
 }
 
-const external = [...Object.keys(packageJson.dependencies), 'fs', 'path']
+const external = ['path']
 
 export default {
   external,

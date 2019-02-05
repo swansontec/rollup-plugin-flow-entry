@@ -32,4 +32,8 @@ export * from '../src/index.js'
 
 This plugin doesn't take any configuration options.
 
-If you use [rollup-plugin-multi-entry](https://github.com/rollup/rollup-plugin-multi-entry), this plugin will properly handle the multiple entry points. You must place rollup-plugin-flow-entry before rollup-plugin-multi-entry in the plugins array for this to work.
+## Multiple Entry Points
+
+If you use Rollup's built-in code splitting feature, this plugin will create one Flow entry point for each entry chunk.
+
+This plugin can also detect when [rollup-plugin-multi-entry](https://github.com/rollup/rollup-plugin-multi-entry) is being used, and will create a single combined Flow entry point when appropriate.
