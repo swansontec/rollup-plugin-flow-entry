@@ -1,5 +1,10 @@
 # rollup-plugin-flow-entry
 
+## 0.3.0 (2019-02-05)
+
+- Work correctly with Rollup's built-in code splitting.
+- Do not write entry files directly to disk, but insert them into the generated bundle for Rollup itself to write.
+
 ## 0.2.2 (2019-01-25)
 
 - Create the destination directory if it is missing.

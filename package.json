@@ -1,13 +1,13 @@
 {
   "name": "rollup-plugin-flow-entry",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "private": false,
   "description": "Allows Flow to find the original typed source code for the Rollup bundle",
   "keywords": [
     "rollup-plugin"
   ],
   "license": "MIT",
-  "author": "William Swanson <william@edgesecure.co>",
+  "author": "William Swanson <william@edge.app>",
   "files": [
     "CHANGELOG.md",
     "lib/*",
