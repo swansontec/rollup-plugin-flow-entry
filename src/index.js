@@ -1,92 +1,64 @@
-import fs from 'fs'
-import { promise as matched } from 'matched'
 import path from 'path'
 
-function mkdir (nativePath) {
-  return new Promise((resolve, reject) =>
-    fs.mkdir(nativePath, void 0, err =>
-      err != null && err.code !== 'EEXIST' ? reject(err) : resolve()
-    )
-  )
-}
-
-function writeFile (nativePath, data, opts) {
-  return new Promise((resolve, reject) =>
-    fs.writeFile(nativePath, data, opts, (err, out) =>
-      err != null ? reject(err) : resolve(out)
-    )
-  )
-}
-
-/**
- * Recursively creates a directory.
- */
-function deepMkdir (nativePath) {
-  return mkdir(nativePath).catch(err => {
-    if (err.code !== 'ENOENT') throw err
-    return deepMkdir(path.dirname(nativePath)).then(() => mkdir(nativePath))
-  })
-}
-
-/**
- * Writes a file, creating its directory if needed.
- */
-function deepWriteFile (nativePath, data, opts) {
-  return writeFile(nativePath, data, opts).catch(err => {
-    if (err.code !== 'ENOENT') throw err
-    return deepMkdir(path.dirname(nativePath)).then(() =>
-      writeFile(nativePath, data, opts)
-    )
-  })
-}
-
-function arrayify (input) {
-  return Array.isArray(input) ? input : input != null ? [input] : []
-}
-
-function resolveInputs (input) {
-  // rollup-plugin-mulit-entry allows an object as input:
-  if (input && (input.include || input.exclude)) {
-    const patterns = arrayify(input.include).concat(
-      arrayify(input.exclude).map(pattern => '!' + pattern)
-    )
-    return matched(patterns, { realpath: true })
-  }
-
-  return matched(arrayify(input), { realpath: true })
-}
+const multiEntryId = '\0rollup-plugin-multi-entry:entry-point'
 
 export default function flowEntry () {
-  let savedInput
+  let savedMultiEntry
 
   return {
     name: 'rollup-plugin-flow-entry',
 
-    options (opts) {
-      savedInput = opts.input
+    transform (code, id) {
+      // Capture the multi-entry point if it comes through:
+      if (id === multiEntryId) savedMultiEntry = code
     },
 
     generateBundle (opts, bundle) {
-      if (!savedInput) return
-      if (typeof savedInput === 'string' && savedInput.charCodeAt(0) === 0) {
-        throw new Error(
-          'Please include rollup-plugin-flow-entry before rollup-plugin-multi-entry in the plugins list'
-        )
+      const outDir =
+        opts.dir != null
+          ? path.resolve(opts.dir)
+          : path.dirname(path.resolve(opts.file))
+
+      const fixPath = id => {
+        const inputPath = path.relative(outDir, path.resolve(id))
+        const escaped = inputPath.replace(/\\+/g, '/')
+        return escaped
       }
 
-      const flowPath = path.resolve(opts.file + '.flow')
-      const outputDir = path.dirname(flowPath)
-
-      return resolveInputs(savedInput).then(inputs => {
-        let code = '// @flow\n\n'
-        for (const input of inputs) {
-          const inputPath = path.relative(outputDir, path.resolve(input))
-          const escaped = inputPath.replace(/\\+/g, '/')
-          code += `export * from '${escaped}'\n`
+      for (const n in bundle) {
+        const file = bundle[n]
+        if (file.isAsset || !file.isEntry || file.facadeModuleId == null) {
+          continue
         }
 
-        return deepWriteFile(flowPath, code, 'utf8')
-      })
+        if (file.facadeModuleId !== multiEntryId) {
+          // Normal files:
+          const path = fixPath(file.facadeModuleId)
+          const source = `// @flow\n\nexport * from '${path}'\n`
+          const fileName = file.fileName + '.flow'
+          bundle[fileName] = { fileName, isAsset: true, source }
+        } else {
+          // rollup-plugin-multi-entry:
+          if (savedMultiEntry == null || opts.file == null) {
+            this.warn(
+              'Unable to create Flow entry: rollup-plugin-multi-entry not configured correctly'
+            )
+            continue
+          }
+
+          let source = '// @flow\n\n'
+          const lines = savedMultiEntry.split('\n')
+          for (const line of lines) {
+            const quoted = line.replace(/^export \* from (".*");/, '$1')
+            if (quoted === line) continue
+            const path = fixPath(JSON.parse(quoted))
+            source += `export * from '${path}'\n`
+          }
+
+          const fileName = fixPath(opts.file + '.flow')
+          bundle[fileName] = { fileName, isAsset: true, source }
+        }
+      }
     }
   }
 }
