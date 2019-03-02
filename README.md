@@ -32,7 +32,22 @@ This will produce a file called `lib/index.js.flow` alongside the normal `lib/in
 export * from '../src/index.js'
 ```
 
-This plugin doesn't take any configuration options.
+## Flow Strict
+
+If you want to enable stricter type checking, pass a `mode`
+into configuration options:
+
+```js
+export default {
+  input: './src/index.js',
+  output: { file: './lib/index.js', format: 'cjs' },
+  plugins: [
+    flowEntry({
+      mode: 'strict-local',
+    })
+  ]
+}
+```
 
 ## Multiple Entry Points
 
