@@ -2,7 +2,8 @@ import path from 'path'
 
 const multiEntryId = '\0rollup-plugin-multi-entry:entry-point'
 
-export default function flowEntry () {
+export default function flowEntry (config = {}) {
+  const mode = config.mode ? ` ${config.mode}` : ''
   let savedMultiEntry
 
   return {
@@ -34,7 +35,7 @@ export default function flowEntry () {
         if (file.facadeModuleId !== multiEntryId) {
           // Normal files:
           const path = fixPath(file.facadeModuleId)
-          const source = `// @flow\n\nexport * from '${path}'\n`
+          const source = `// @flow${mode}\n\nexport * from '${path}'\n`
           const fileName = file.fileName + '.flow'
           bundle[fileName] = { fileName, isAsset: true, source }
         } else {
@@ -46,7 +47,7 @@ export default function flowEntry () {
             continue
           }
 
-          let source = '// @flow\n\n'
+          let source = `// @flow${mode}\n\n`
           const lines = savedMultiEntry.split('\n')
           for (const line of lines) {
             const quoted = line.replace(/^export \* from (".*");/, '$1')
