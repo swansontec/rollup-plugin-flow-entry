@@ -1,5 +1,9 @@
 # rollup-plugin-flow-entry
 
+## 0.3.1 (2019-03-01)
+
+- Add the option to enable strict type checking.
+
 ## 0.3.0 (2019-02-05)
 
 - Work correctly with Rollup's built-in code splitting.
