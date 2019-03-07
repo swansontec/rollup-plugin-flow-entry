@@ -18,7 +18,7 @@ export default {
   output: { file: './lib/index.js', format: 'cjs' },
   plugins: [
     flowEntry()
-    // You will also need rollup-plugin-babel or rollup-plubin-flow
+    // You will also need rollup-plugin-babel or rollup-plugin-flow
     // in here to strip your type annotations...
   ]
 }
