@@ -1,5 +1,6 @@
 # rollup-plugin-flow-entry
 
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Build Status](https://travis-ci.com/swansontec/rollup-plugin-flow-entry.svg?branch=master)](https://travis-ci.com/swansontec/rollup-plugin-flow-entry)
 
 If you are writing a library using the [Flow type system](https://flow.org/), you might want to make your library's types available to your end users. One way to do this is to place a file with a `.js.flow` extension alongside your bundled source code. Flow knows to look inside files like this for type information.
