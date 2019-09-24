@@ -20,10 +20,10 @@ export default function flowEntry (config = {}) {
           ? path.resolve(opts.dir)
           : path.dirname(path.resolve(opts.file))
 
-      const fixPath = id => {
-        const inputPath = path.relative(outDir, path.resolve(id))
-        const escaped = inputPath.replace(/\\+/g, '/')
-        return escaped
+      const locatePath = id => path.relative(outDir, path.resolve(id))
+      const escapePath = id => {
+        id = id.replace(/\\+/g, '/')
+        return /^\./.test(id) ? id : `./${id}`
       }
 
       for (const n in bundle) {
@@ -34,7 +34,7 @@ export default function flowEntry (config = {}) {
 
         if (file.facadeModuleId !== multiEntryId) {
           // Normal files:
-          const path = fixPath(file.facadeModuleId)
+          const path = escapePath(locatePath(file.facadeModuleId))
           const source = `// @flow${mode}\n\nexport * from '${path}'\n`
           const fileName = file.fileName + '.flow'
           bundle[fileName] = { fileName, isAsset: true, source }
@@ -52,11 +52,11 @@ export default function flowEntry (config = {}) {
           for (const line of lines) {
             const quoted = line.replace(/^export \* from (".*");/, '$1')
             if (quoted === line) continue
-            const path = fixPath(JSON.parse(quoted))
+            const path = escapePath(locatePath(JSON.parse(quoted)))
             source += `export * from '${path}'\n`
           }
 
-          const fileName = fixPath(opts.file + '.flow')
+          const fileName = locatePath(opts.file + '.flow')
           bundle[fileName] = { fileName, isAsset: true, source }
         }
       }

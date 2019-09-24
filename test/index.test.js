@@ -70,6 +70,29 @@ describe('rollup-plugin-flow-entry', function () {
       })
   })
 
+  it('handles input & output in the same directory', function () {
+    return rollup({
+      input: ['test/demo/entry1.js', 'test/demo/entry2.js'],
+      plugins: [flowEntry(), babel(babelOpts)]
+    })
+      .then(bundle =>
+        bundle.generate({ dir: 'test/demo/', format: 'cjs' })
+      )
+      .then(({ output }) => {
+        expect(output).has.lengthOf(5)
+        expect(output).to.deep.include({
+          fileName: 'entry1.js.flow',
+          isAsset: true,
+          source: "// @flow\n\nexport * from './entry1.js'\n"
+        })
+        expect(output).to.deep.include({
+          fileName: 'entry2.js.flow',
+          isAsset: true,
+          source: "// @flow\n\nexport * from './entry2.js'\n"
+        })
+      })
+  })
+
   it('works with rollup-plugin-multi-entry', function () {
     return rollup({
       input: 'test/demo/entry*.js',
