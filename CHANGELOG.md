@@ -1,5 +1,9 @@
 # rollup-plugin-flow-entry
 
+## 0.3.2 (2019-03-01)
+
+- Fix path handling when the input & output locations are the same.
+
 ## 0.3.1 (2019-03-01)
 
 - Add the option to enable strict type checking.
