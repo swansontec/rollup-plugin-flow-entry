@@ -5,6 +5,7 @@ import { rollup } from 'rollup'
 import babel from 'rollup-plugin-babel'
 import multiEntry from 'rollup-plugin-multi-entry'
 
+import { buildEntry } from '../src/helpers.js'
 import flowEntry from '../src/index.js'
 
 const babelOpts = {
@@ -70,9 +71,12 @@ describe('rollup-plugin-flow-entry', function() {
       })
   })
 
-  it('handles input & output in the same directory', function() {
+  it('handles unusual output directories', function() {
     return rollup({
-      input: ['test/demo/entry1.js', 'test/demo/entry2.js'],
+      input: {
+        entry1: 'test/demo/entry1.js',
+        'sub/entry2': 'test/demo/entry2.js'
+      },
       plugins: [flowEntry(), babel(babelOpts)]
     })
       .then(bundle => bundle.generate({ dir: 'test/demo/', format: 'cjs' }))
@@ -84,9 +88,9 @@ describe('rollup-plugin-flow-entry', function() {
           source: "// @flow\n\nexport * from './entry1.js'\n"
         })
         expect(output).to.deep.include({
-          fileName: 'entry2.js.flow',
+          fileName: 'sub/entry2.js.flow',
           isAsset: true,
-          source: "// @flow\n\nexport * from './entry2.js'\n"
+          source: "// @flow\n\nexport * from '../entry2.js'\n"
         })
       })
   })
@@ -135,5 +139,34 @@ describe('rollup-plugin-flow-entry', function() {
           source: expected
         })
       })
+  })
+})
+
+describe('buildEntry', function() {
+  it('handles difficult paths', function() {
+    const expected = {
+      fileName: 'sub/index.js.flow',
+      isAsset: true,
+      source:
+        '// @flow semi-strict\n\n' +
+        "export * from './bare.js'\n" +
+        "export * from '../windows/style.js'\n" +
+        "export * from '../../some\\'quotes\\'in/here.js'\n"
+    }
+
+    const paths = [
+      '/home/someone/sub/bare.js',
+      '/home/someone/windows\\style.js',
+      "/home/some'quotes'in/here.js"
+    ]
+
+    expect(
+      buildEntry(
+        { mode: 'semi-strict' },
+        '/home/someone',
+        'sub/index.js',
+        paths
+      )
+    ).deep.equals(expected)
   })
 })
