@@ -1,19 +1,19 @@
 /* global describe, it */
 
-const { expect } = require('chai')
-const { rollup } = require('rollup')
-const babel = require('rollup-plugin-babel')
-const multiEntry = require('rollup-plugin-multi-entry')
+import { expect } from 'chai'
+import { rollup } from 'rollup'
+import babel from 'rollup-plugin-babel'
+import multiEntry from 'rollup-plugin-multi-entry'
 
-const flowEntry = require('../lib/index.js')
+import flowEntry from '../src/index.js'
 
 const babelOpts = {
   babelrc: false,
   presets: ['@babel/preset-env', '@babel/preset-flow']
 }
 
-describe('rollup-plugin-flow-entry', function () {
-  it('handles single entry point', function () {
+describe('rollup-plugin-flow-entry', function() {
+  it('handles single entry point', function() {
     return rollup({
       input: 'test/demo/entry1.js',
       plugins: [flowEntry(), babel(babelOpts)]
@@ -31,7 +31,7 @@ describe('rollup-plugin-flow-entry', function () {
       })
   })
 
-  it('handles single entry point in strict mode', function () {
+  it('handles single entry point in strict mode', function() {
     return rollup({
       input: 'test/demo/entry1.js',
       plugins: [flowEntry({ mode: 'strict' }), babel(babelOpts)]
@@ -49,7 +49,7 @@ describe('rollup-plugin-flow-entry', function () {
       })
   })
 
-  it('handles multiple entry points', function () {
+  it('handles multiple entry points', function() {
     return rollup({
       input: ['test/demo/entry1.js', 'test/demo/entry2.js'],
       plugins: [flowEntry(), babel(babelOpts)]
@@ -70,14 +70,12 @@ describe('rollup-plugin-flow-entry', function () {
       })
   })
 
-  it('handles input & output in the same directory', function () {
+  it('handles input & output in the same directory', function() {
     return rollup({
       input: ['test/demo/entry1.js', 'test/demo/entry2.js'],
       plugins: [flowEntry(), babel(babelOpts)]
     })
-      .then(bundle =>
-        bundle.generate({ dir: 'test/demo/', format: 'cjs' })
-      )
+      .then(bundle => bundle.generate({ dir: 'test/demo/', format: 'cjs' }))
       .then(({ output }) => {
         expect(output).has.lengthOf(5)
         expect(output).to.deep.include({
@@ -93,7 +91,7 @@ describe('rollup-plugin-flow-entry', function () {
       })
   })
 
-  it('works with rollup-plugin-multi-entry', function () {
+  it('works with rollup-plugin-multi-entry', function() {
     return rollup({
       input: 'test/demo/entry*.js',
       plugins: [flowEntry(), multiEntry(), babel(babelOpts)]
@@ -116,7 +114,7 @@ describe('rollup-plugin-flow-entry', function () {
       })
   })
 
-  it('works with rollup-plugin-multi-entry in strict mode', function () {
+  it('works with rollup-plugin-multi-entry in strict mode', function() {
     return rollup({
       input: 'test/demo/entry*.js',
       plugins: [flowEntry({ mode: 'strict' }), multiEntry(), babel(babelOpts)]

@@ -1,5 +1,5 @@
 // @flow
 
-export function common () {
+export function common() {
   console.log('common')
 }
