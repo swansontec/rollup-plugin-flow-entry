@@ -95,6 +95,55 @@ describe('rollup-plugin-flow-entry', function() {
       })
   })
 
+  it('handles types string configuration', function() {
+    return rollup({
+      input: ['test/demo/entry1.js', 'test/demo/entry2.js'],
+      plugins: [
+        flowEntry({ types: 'test/types/entry.js.flow' }),
+        babel(babelOpts)
+      ]
+    })
+      .then(bundle => bundle.generate({ dir: 'test/tmp/', format: 'cjs' }))
+      .then(({ output }) => {
+        expect(output).has.lengthOf(5)
+        expect(output).to.deep.include({
+          fileName: 'entry1.js.flow',
+          isAsset: true,
+          source: "// @flow\n\nexport * from '../types/entry.js.flow'\n"
+        })
+        expect(output).to.deep.include({
+          fileName: 'entry2.js.flow',
+          isAsset: true,
+          source: "// @flow\n\nexport * from '../types/entry.js.flow'\n"
+        })
+      })
+  })
+
+  it('handles types object configuration', function() {
+    return rollup({
+      input: ['test/demo/entry1.js', 'test/demo/entry2.js'],
+      plugins: [
+        flowEntry({
+          types: {
+            'entry1.js': 'test/types/entry.js.flow',
+            'entry2.js': false,
+            'entry3.js': 'test/types/imaginary.js'
+          }
+        }),
+        babel(babelOpts)
+      ]
+    })
+      .then(bundle => bundle.generate({ dir: 'test/tmp/', format: 'cjs' }))
+      .then(({ output }) => {
+        expect(output).has.lengthOf(4)
+        expect(output).to.deep.include({
+          fileName: 'entry1.js.flow',
+          isAsset: true,
+          source: "// @flow\n\nexport * from '../types/entry.js.flow'\n"
+        })
+      })
+  })
+
   it('works with rollup-plugin-multi-entry', function() {
     return rollup({
       input: 'test/demo/entry*.js',

@@ -8,7 +8,23 @@ import path from 'path'
  * @param {string[]} paths an array of absolute paths to export types from.
  */
 export function buildEntry(config, outDir, fileName, paths) {
-  const { mode } = config
+  const { mode, types } = config
+
+  // Handle path overrides:
+  if (typeof types === 'string') {
+    paths = [types]
+  } else if (Array.isArray(types)) {
+    paths = types
+  } else if (typeof types === 'object' && types != null) {
+    const ourTypes = types[fileName]
+    if (typeof ourTypes === 'string') {
+      paths = [ourTypes]
+    } else if (Array.isArray(ourTypes)) {
+      paths = ourTypes
+    } else if (ourTypes === false) {
+      return
+    }
+  }
 
   // Set up the path resolution logic:
   const here = path.dirname(path.resolve(outDir, fileName))

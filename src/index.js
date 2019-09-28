@@ -29,7 +29,7 @@ export default function flowEntry(config = {}) {
           const entry = buildEntry(config, outDir, file.fileName, [
             file.facadeModuleId
           ])
-          bundle[entry.fileName] = entry
+          if (entry != null) bundle[entry.fileName] = entry
         } else {
           // rollup-plugin-multi-entry:
           if (savedMultiEntry == null || opts.file == null) {
@@ -45,7 +45,7 @@ export default function flowEntry(config = {}) {
             path.basename(opts.file),
             parseMultiEntry(outDir, savedMultiEntry)
           )
-          bundle[entry.fileName] = entry
+          if (entry != null) bundle[entry.fileName] = entry
         }
       }
     }
