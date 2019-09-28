@@ -2,19 +2,19 @@ import path from 'path'
 
 const multiEntryId = '\0rollup-plugin-multi-entry:entry-point'
 
-export default function flowEntry (config = {}) {
+export default function flowEntry(config = {}) {
   const mode = config.mode ? ` ${config.mode}` : ''
   let savedMultiEntry
 
   return {
     name: 'rollup-plugin-flow-entry',
 
-    transform (code, id) {
+    transform(code, id) {
       // Capture the multi-entry point if it comes through:
       if (id === multiEntryId) savedMultiEntry = code
     },
 
-    generateBundle (opts, bundle) {
+    generateBundle(opts, bundle) {
       const outDir =
         opts.dir != null
           ? path.resolve(opts.dir)
