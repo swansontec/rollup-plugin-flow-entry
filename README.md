@@ -15,8 +15,8 @@ Here is an example `rollup.config.js` file using this plugin:
 import flowEntry from 'rollup-plugin-flow-entry'
 
 export default {
-  input: './src/index.js',
-  output: { file: './lib/index.js', format: 'cjs' },
+  input: 'src/index.js',
+  output: { file: 'lib/index.js', format: 'cjs' },
   plugins: [
     flowEntry()
     // You will also need rollup-plugin-babel or rollup-plugin-flow
@@ -35,17 +35,15 @@ export * from '../src/index.js'
 
 ## Flow Strict
 
-If you want to enable stricter type checking, pass a `mode`
-into configuration options:
+If you want to enable stricter type checking, pass a `mode` into configuration options:
 
 ```js
 export default {
-  input: './src/index.js',
-  output: { file: './lib/index.js', format: 'cjs' },
+  input: 'src/index.js',
+  output: { file: 'lib/index.js', format: 'cjs' },
   plugins: [
-    flowEntry({
-      mode: 'strict-local',
-    })
+    flowEntry({ mode: 'strict-local' })
+    // Other plugins...
   ]
 }
 ```
@@ -55,3 +53,34 @@ export default {
 If you use Rollup's built-in code splitting feature, this plugin will create one Flow entry point for each entry chunk.
 
 This plugin can also detect when [rollup-plugin-multi-entry](https://github.com/rollup/rollup-plugin-multi-entry) is being used, and will create a single combined Flow entry point when appropriate.
+
+## Customizing Source Locations
+
+By default `rollup-plugin-flow-entry` will link each output file back to its original source file (if one exists). If you want to change this behavior, though, you can pass a `types` option to the plugin, which will replace the original source location.
+
+This is useful if your library is written in TypeScript, for example, but you would still like to ship Flow types. Just put your Flow type definitions somewhere in your source directory, and then use the `types` option to link back to the Flow types instead of your original TypeScript source code:
+
+```js
+export default {
+  input: 'src/index.ts',
+  output: { file: 'lib/index.js', format: 'cjs' },
+  plugins: [
+    flowEntry({ types: 'src/flow-types.js', })
+    // Other plugins for TypeScript support...
+  ]
+}
+
+```
+
+If you have multiple entry points, you can pass an object for `types` to customize each output file individually:
+
+```js
+flowEntry({
+  types: {
+    'index.js': 'src/flow-types.js',
+    'skip.js': false
+  }
+})
+```
+
+The output filename goes on the left, and the source filename goes on the right. Passing `false` will skip that output file entirely.
