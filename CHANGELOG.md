@@ -1,5 +1,13 @@
 # rollup-plugin-flow-entry
 
+## 0.3.3 (2019-09-30)
+
+- Add a `types` option to control the input location.
+- Fix path-manipulation & escaping bugs.
+  - Output files in sub-folders would have incorrect input paths.
+  - String escaping did not handle `'` characters.
+- Upgrade build tooling.
+
 ## 0.3.2 (2019-03-01)
 
 - Fix path handling when the input & output locations are the same.
