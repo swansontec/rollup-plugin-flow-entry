@@ -5,7 +5,7 @@ import { rollup } from 'rollup'
 import babel from 'rollup-plugin-babel'
 import multiEntry from 'rollup-plugin-multi-entry'
 
-import { buildEntry } from '../src/helpers.js'
+import { buildAsset } from '../src/helpers.js'
 import flowEntry from '../src/index.js'
 
 const babelOpts = {
@@ -193,7 +193,16 @@ describe('rollup-plugin-flow-entry', function() {
 
 describe('buildEntry', function() {
   it('handles difficult paths', function() {
-    const expected = {
+    const entry = {
+      fileName: 'sub/index.js.flow',
+      input: [
+        '/home/someone/sub/bare.js',
+        '/home/someone/windows\\style.js',
+        "/home/some'quotes'in/here.js"
+      ]
+    }
+
+    expect(buildAsset('/home/someone', entry, 'semi-strict')).deep.equals({
       fileName: 'sub/index.js.flow',
       isAsset: true,
       source:
@@ -201,21 +210,6 @@ describe('buildEntry', function() {
         "export * from './bare.js'\n" +
         "export * from '../windows/style.js'\n" +
         "export * from '../../some\\'quotes\\'in/here.js'\n"
-    }
-
-    const paths = [
-      '/home/someone/sub/bare.js',
-      '/home/someone/windows\\style.js',
-      "/home/some'quotes'in/here.js"
-    ]
-
-    expect(
-      buildEntry(
-        { mode: 'semi-strict' },
-        '/home/someone',
-        'sub/index.js',
-        paths
-      )
-    ).deep.equals(expected)
+    })
   })
 })

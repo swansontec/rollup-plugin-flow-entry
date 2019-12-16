@@ -2,29 +2,9 @@ import path from 'path'
 
 /**
  * Formats an output file, which re-exports items from a list of paths.
- * @param {*} config the rollup-plugin-flow-entry config object.
- * @param {string} outDir the output directory.
- * @param {string} fileName the output file name.
- * @param {string[]} paths an array of absolute paths to export types from.
  */
-export function buildEntry(config, outDir, fileName, paths) {
-  const { mode, types } = config
-
-  // Handle path overrides:
-  if (typeof types === 'string') {
-    paths = [types]
-  } else if (Array.isArray(types)) {
-    paths = types
-  } else if (typeof types === 'object' && types != null) {
-    const ourTypes = types[fileName]
-    if (typeof ourTypes === 'string') {
-      paths = [ourTypes]
-    } else if (Array.isArray(ourTypes)) {
-      paths = ourTypes
-    } else if (ourTypes === false) {
-      return
-    }
-  }
+export function buildAsset(outDir, flowEntry, mode) {
+  const { fileName, input } = flowEntry
 
   // Set up the path resolution logic:
   const here = path.dirname(path.resolve(outDir, fileName))
@@ -38,11 +18,15 @@ export function buildEntry(config, outDir, fileName, paths) {
 
   // Build the source code:
   let source = mode != null ? `// @flow ${mode}\n\n` : '// @flow\n\n'
-  for (let i = 0; i < paths.length; ++i) {
-    source += `export * from '${escapePath(paths[i])}'\n`
+  if (typeof input === 'string') {
+    source += `export * from '${escapePath(input)}'\n`
+  } else {
+    for (let i = 0; i < input.length; ++i) {
+      source += `export * from '${escapePath(input[i])}'\n`
+    }
   }
 
-  return { fileName: fileName + '.flow', isAsset: true, source }
+  return { fileName, isAsset: true, source }
 }
 
 /**
