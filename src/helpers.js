@@ -1,4 +1,5 @@
 import path from 'path'
+import fs from 'fs'
 
 /**
  * Formats an output file, which re-exports items from a list of paths.
@@ -19,6 +20,10 @@ export function buildAsset(outDir, flowEntry, mode) {
   // Build the source code:
   let source = mode != null ? `// @flow ${mode}\n\n` : '// @flow\n\n'
   if (typeof input === 'string') {
+    const sourceText = fs.readFileSync(input, 'utf8')
+    if (hasDefaultExport(sourceText)) {
+      source += `export { default } from '${escapePath(input)}'\n`
+    }
     source += `export * from '${escapePath(input)}'\n`
   } else {
     for (let i = 0; i < input.length; ++i) {
@@ -27,6 +32,14 @@ export function buildAsset(outDir, flowEntry, mode) {
   }
 
   return { fileName, isAsset: true, source }
+}
+
+/**
+ * Returns true if the source code contains "export default".
+ */
+function hasDefaultExport(sourceText) {
+  // TODO: Use a proper AST
+  return /export\s+default/.test(sourceText)
 }
 
 /**

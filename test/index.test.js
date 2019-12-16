@@ -99,7 +99,7 @@ describe('rollup-plugin-flow-entry', function() {
     return rollup({
       input: ['test/demo/entry1.js', 'test/demo/entry2.js'],
       plugins: [
-        flowEntry({ types: 'test/types/entry.js.flow' }),
+        flowEntry({ types: 'test/demo/types/entry.js.flow' }),
         babel(babelOpts)
       ]
     })
@@ -109,12 +109,14 @@ describe('rollup-plugin-flow-entry', function() {
         expect(output).to.deep.include({
           fileName: 'entry1.js.flow',
           isAsset: true,
-          source: "// @flow\n\nexport * from '../types/entry.js.flow'\n"
+          source:
+            "// @flow\n\nexport { default } from '../demo/types/entry.js.flow'\nexport * from '../demo/types/entry.js.flow'\n"
         })
         expect(output).to.deep.include({
           fileName: 'entry2.js.flow',
           isAsset: true,
-          source: "// @flow\n\nexport * from '../types/entry.js.flow'\n"
+          source:
+            "// @flow\n\nexport { default } from '../demo/types/entry.js.flow'\nexport * from '../demo/types/entry.js.flow'\n"
         })
       })
   })
@@ -125,7 +127,7 @@ describe('rollup-plugin-flow-entry', function() {
       plugins: [
         flowEntry({
           types: {
-            'entry1.js': 'test/types/entry.js.flow',
+            'entry1.js': 'test/demo/types/entry.js.flow',
             'entry2.js': false,
             'entry3.js': 'test/types/imaginary.js'
           }
@@ -139,7 +141,8 @@ describe('rollup-plugin-flow-entry', function() {
         expect(output).to.deep.include({
           fileName: 'entry1.js.flow',
           isAsset: true,
-          source: "// @flow\n\nexport * from '../types/entry.js.flow'\n"
+          source:
+            "// @flow\n\nexport { default } from '../demo/types/entry.js.flow'\nexport * from '../demo/types/entry.js.flow'\n"
         })
       })
   })
