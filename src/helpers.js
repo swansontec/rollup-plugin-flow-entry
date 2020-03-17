@@ -42,7 +42,7 @@ export function buildEntry(config, outDir, fileName, paths) {
     source += `export * from '${escapePath(paths[i])}'\n`
   }
 
-  return { fileName: fileName + '.flow', isAsset: true, source }
+  return { type: 'asset', fileName: fileName + '.flow', source }
 }
 
 /**
