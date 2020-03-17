@@ -1,5 +1,9 @@
 # rollup-plugin-flow-entry
 
+## 0.3.4 (2020-03-16)
+
+- Use Rollup's `this.emitFile` to generate output instead of directly writing to the bundle, which is deprecated.
+
 ## 0.3.3 (2019-09-30)
 
 - Add a `types` option to control the input location.
