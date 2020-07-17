@@ -19,8 +19,8 @@ function getSource(output, fileName) {
   return file.source
 }
 
-describe('rollup-plugin-flow-entry', function() {
-  it('handles single entry point', function() {
+describe('rollup-plugin-flow-entry', function () {
+  it('handles single entry point', function () {
     return rollup({
       input: 'test/demo/entry1.js',
       plugins: [flowEntry(), babel(babelOpts)]
@@ -36,7 +36,7 @@ describe('rollup-plugin-flow-entry', function() {
       })
   })
 
-  it('handles single entry point in strict mode', function() {
+  it('handles single entry point in strict mode', function () {
     return rollup({
       input: 'test/demo/entry1.js',
       plugins: [flowEntry({ mode: 'strict' }), babel(babelOpts)]
@@ -52,7 +52,7 @@ describe('rollup-plugin-flow-entry', function() {
       })
   })
 
-  it('handles multiple entry points', function() {
+  it('handles multiple entry points', function () {
     return rollup({
       input: ['test/demo/entry1.js', 'test/demo/entry2.js'],
       plugins: [flowEntry(), babel(babelOpts)]
@@ -69,7 +69,7 @@ describe('rollup-plugin-flow-entry', function() {
       })
   })
 
-  it('handles unusual output directories', function() {
+  it('handles unusual output directories', function () {
     return rollup({
       input: {
         entry1: 'test/demo/entry1.js',
@@ -89,7 +89,7 @@ describe('rollup-plugin-flow-entry', function() {
       })
   })
 
-  it('handles types string configuration', function() {
+  it('handles types string configuration', function () {
     return rollup({
       input: ['test/demo/entry1.js', 'test/demo/entry2.js'],
       plugins: [
@@ -109,7 +109,7 @@ describe('rollup-plugin-flow-entry', function() {
       })
   })
 
-  it('handles types object configuration', function() {
+  it('handles types object configuration', function () {
     return rollup({
       input: ['test/demo/entry1.js', 'test/demo/entry2.js'],
       plugins: [
@@ -132,7 +132,7 @@ describe('rollup-plugin-flow-entry', function() {
       })
   })
 
-  it('works with rollup-plugin-multi-entry', function() {
+  it('works with rollup-plugin-multi-entry', function () {
     return rollup({
       input: 'test/demo/entry*.js',
       plugins: [flowEntry(), multiEntry(), babel(babelOpts)]
@@ -151,7 +151,7 @@ describe('rollup-plugin-flow-entry', function() {
       })
   })
 
-  it('works with rollup-plugin-multi-entry in strict mode', function() {
+  it('works with rollup-plugin-multi-entry in strict mode', function () {
     return rollup({
       input: 'test/demo/entry*.js',
       plugins: [flowEntry({ mode: 'strict' }), multiEntry(), babel(babelOpts)]
@@ -171,8 +171,8 @@ describe('rollup-plugin-flow-entry', function() {
   })
 })
 
-describe('buildEntry', function() {
-  it('handles difficult paths', function() {
+describe('buildEntry', function () {
+  it('handles difficult paths', function () {
     const expected = {
       type: 'asset',
       fileName: 'sub/index.js.flow',
