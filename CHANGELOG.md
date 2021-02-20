@@ -1,5 +1,9 @@
 # rollup-plugin-flow-entry
 
+## 0.3.5 (2021-02-20)
+
+- Fix to work with the latest @rollup/plugin-multi-entry.
+
 ## 0.3.4 (2020-03-16)
 
 - Use Rollup's `this.emitFile` to generate output instead of directly writing to the bundle, which is deprecated.
