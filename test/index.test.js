@@ -1,14 +1,15 @@
 /* global describe, it */
 
+import babel from '@rollup/plugin-babel'
+import multiEntry from '@rollup/plugin-multi-entry'
 import { expect } from 'chai'
 import { rollup } from 'rollup'
-import babel from 'rollup-plugin-babel'
-import multiEntry from 'rollup-plugin-multi-entry'
 
 import { buildEntry } from '../src/helpers.js'
 import flowEntry from '../src/index.js'
 
 const babelOpts = {
+  babelHelpers: 'bundled',
   babelrc: false,
   presets: ['@babel/preset-env', '@babel/preset-flow']
 }

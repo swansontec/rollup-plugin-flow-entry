@@ -1,8 +1,12 @@
 {
-  "extends": ["standard-kit/lint", "standard-kit/lint/flow"],
-  "plugins": ["prettier"],
+  "extends": [
+    "standard-kit/prettier",
+    "standard-kit/prettier/flow"
+  ],
+  "plugins": [
+    "simple-import-sort"
+  ],
   "rules": {
-    "no-var": "error",
-    "prettier/prettier": "error"
+    "simple-import-sort/imports": "error"
   }
 }
