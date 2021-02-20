@@ -52,7 +52,7 @@ export default {
 
 If you use Rollup's built-in code splitting feature, this plugin will create one Flow entry point for each entry chunk.
 
-This plugin can also detect when [rollup-plugin-multi-entry](https://github.com/rollup/rollup-plugin-multi-entry) is being used, and will create a single combined Flow entry point when appropriate.
+This plugin can also detect when [@rollup/plugin-multi-entry](https://github.com/rollup/plugins/tree/master/packages/multi-entry) is being used, and will create a single combined Flow entry point when appropriate.
 
 ## Customizing Source Locations
 

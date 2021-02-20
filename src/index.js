@@ -2,7 +2,12 @@ import path from 'path'
 
 import { buildEntry, parseMultiEntry } from './helpers.js'
 
-const multiEntryId = '\0rollup-plugin-multi-entry:entry-point'
+function isMultiEntry(id) {
+  return (
+    id === '\0rollup-plugin-multi-entry:entry-point' ||
+    id === '\0virtual:multi-entry.js'
+  )
+}
 
 export default function flowEntry(config = {}) {
   let savedMultiEntry
@@ -12,7 +17,7 @@ export default function flowEntry(config = {}) {
 
     transform(code, id) {
       // Capture the multi-entry point if it comes through:
-      if (id === multiEntryId) savedMultiEntry = code
+      if (isMultiEntry(id)) savedMultiEntry = code
     },
 
     generateBundle(opts, bundle) {
@@ -24,7 +29,7 @@ export default function flowEntry(config = {}) {
           continue
         }
 
-        if (file.facadeModuleId !== multiEntryId) {
+        if (!isMultiEntry(file.facadeModuleId)) {
           // Normal files:
           const entry = buildEntry(config, outDir, file.fileName, [
             file.facadeModuleId

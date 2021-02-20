@@ -53,9 +53,9 @@ export function parseMultiEntry(outDir, code) {
   const paths = []
   const lines = code.split('\n')
   for (const line of lines) {
-    const quoted = line.replace(/^export \* from (".*");/, '$1')
+    const quoted = line.replace(/^export \* from (".*");?/, '$1')
     if (quoted === line) continue
     paths.push(path.resolve(outDir, JSON.parse(quoted)))
   }
-  return paths
+  return paths.sort()
 }
