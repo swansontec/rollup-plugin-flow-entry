@@ -21,13 +21,7 @@
     "lint": "eslint .",
     "precommit": "npm run lint && npm run test",
     "prepare": "rollup -c",
-    "pretest": "rollup -c",
-    "test": "mocha -r sucrase/register test/index.test.js"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run precommit"
-    }
+    "test": "mocha -r sucrase/register 'test/**/*.test.js'"
   },
   "devDependencies": {
     "@babel/core": "^7.12.17",
@@ -44,7 +38,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-simple-import-sort": "^6.0.1",
-    "husky": "^4.3.0",
+    "husky": "^6.0.0",
     "lint-staged": "^10.5.3",
     "mocha": "^8.3.0",
     "prettier": "^2.2.0",
