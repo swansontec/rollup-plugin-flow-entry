@@ -6,6 +6,7 @@
   "keywords": [
     "rollup-plugin"
   ],
+  "homepage": "https://github.com/swansontec/rollup-plugin-flow-entry",
   "license": "MIT",
   "author": "William Swanson <william@edge.app>",
   "main": "lib/index.js",
