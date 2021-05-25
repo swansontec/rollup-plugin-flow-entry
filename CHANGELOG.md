@@ -1,5 +1,9 @@
 # rollup-plugin-flow-entry
 
+## 0.3.6 (2021-02-20)
+
+- Add comments to generated output files.
+
 ## 0.3.5 (2021-02-20)
 
 - Fix to work with the latest @rollup/plugin-multi-entry.
